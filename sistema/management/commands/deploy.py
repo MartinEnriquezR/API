@@ -4,13 +4,23 @@ from django.core.management.base import BaseCommand
 #librerias de python
 import csv
 from catalogo.models import *
-from sistema.models import Cuestionario
+from sistema.models import *
 
 #comando
 class Command(BaseCommand):
     
     def handle(self,*args,**options):
+
+        #remover los cuestionarios
         self.removerCuestionarios()
+
+        #remover a todos los usuarios de la base de datos
+        persona = Persona.objects.all().delete()
+
+        #crear el superusuario
+        self.createsu()
+
+        #llenar los modelos de la base de datos
         self.circunstancias()
         self.colorCabello()
         self.colorOjos()
@@ -27,6 +37,21 @@ class Command(BaseCommand):
         self.ubicacionCorporal()
         self.estadoCivil()
         self.dispositivoRastreador()
+
+    def createsu(self):
+        if not Persona.objects.filter(username='admin').exists():
+            Persona.objects.create_superuser(
+                username = 'admin',
+                email = 'jmeenriquezr@gmail.com',
+                nombre = 'Jose Martin',
+                apellido_paterno = 'Enriquez',
+                apellido_materno = 'Rodriguez',
+                genero = 'Masculino',
+                fecha_nacimiento = '1997-03-18',
+                is_usuaria = False,
+                is_contacto_confianza = True,
+                password = '3d23d234f3',
+            )
 
     def removerCuestionarios(self):
         #remover cuestionarios

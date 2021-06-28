@@ -1,6 +1,4 @@
 release: python manage.py migrate
-release: python manage.py removeUsers
-release: python manage.py createsu
-release: python manage.py fillModels
+release: python manage.py deploy
 
 web: gunicorn main.wsgi --log-file -
