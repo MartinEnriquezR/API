@@ -4,11 +4,13 @@ from django.core.management.base import BaseCommand
 #librerias de python
 import csv
 from catalogo.models import *
+from sistema.models import Cuestionario
 
 #comando
 class Command(BaseCommand):
     
     def handle(self,*args,**options):
+        self.removerCuestionarios()
         self.circunstancias()
         self.colorCabello()
         self.colorOjos()
@@ -25,6 +27,10 @@ class Command(BaseCommand):
         self.ubicacionCorporal()
         self.estadoCivil()
         self.dispositivoRastreador()
+
+    def removerCuestionarios(self):
+        #remover cuestionarios
+        cuestionarios = Cuestionario.objects.all().delete()
 
     def circunstancias(self):
 
