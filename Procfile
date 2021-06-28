@@ -1,6 +1,5 @@
 release: python manage.py migrate
 release: python manage.py removeUsers
-release: python manage.py removeCuestionarios
 release: python manage.py createsu
 release: python manage.py fillModels
 
