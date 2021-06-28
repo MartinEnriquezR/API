@@ -319,18 +319,51 @@ class incidenciasTotalesSerializer(serializers.Serializer):
         #incidencias en el año
         incidencias = Alerta.objects.filter(fecha_hora__year=str(data['ano']))
 
-        informacion = {}
+        informacion = {
+            'Enero':0,
+            'Febrero':0,
+            'Marzo':0,
+            'Abril':0,
+            'Mayo':0,
+            'Junio':0,
+            'Julio':0,
+            'Agosto':0,
+            'Septiembre':0,
+            'Octubre':0,
+            'Noviembre':0,
+            'Diciembre':0
+        }
 
         #guardar la informacion de cada mes
         for incidencia in incidencias:
-            #mes que tiene la incidencia
+            #mes que tiene la incidencia en numero
             mes = incidencia.fecha_hora.month
 
             #guardar la cantidad de incidencias
-            if str(mes) in informacion:
-                informacion[str(mes)] += 1
-            else:
-                informacion[str(mes)] = 1
+            if mes == 1:
+                informacion['Enero'] += 1
+            elif mes == 2:
+                informacion['Febrero'] += 1
+            elif mes == 3:
+                informacion['Marzo'] += 1
+            elif mes == 4:
+                informacion['Abril'] += 1
+            elif mes == 5:
+                informacion['Mayo'] += 1
+            elif mes == 6:
+                informacion['Junio'] += 1
+            elif mes == 7:
+                informacion['Julio'] += 1
+            elif mes == 8:
+                informacion['Agosto'] += 1
+            elif mes == 9:
+                informacion['Septiembre'] += 1
+            elif mes == 10:
+                informacion['Octubre'] += 1
+            elif mes == 11:
+                informacion['Noviembre'] += 1
+            elif mes == 1:
+                informacion['Diciembre'] += 1
 
         return informacion
 
