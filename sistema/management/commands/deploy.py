@@ -256,7 +256,7 @@ class Command(BaseCommand):
         path = 'ModelosCSV/DispositivoRastreador.csv'
 
         #lista de 1500 numeros
-        dispositivos = list(range(1,1501))
+        dispositivos = list(range(1,451))
         
         #llenar el csv con los dispositivos
         with open(path,'w') as file:
