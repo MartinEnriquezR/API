@@ -441,7 +441,7 @@ class alertaViewSet(viewsets.GenericViewSet):
 
     """Los permisos de publicar y desactivar no necesitan autentificacion"""
     def get_permissions(self):
-        if self.action in ['publicar','desactivacion','alternativoAlerta']:
+        if self.action in ['publicar','desactivacion','alternativoAlerta','alternativoDesactivacion']:
             permissions = [AllowAny]
         elif self.action in ['ultimaAlerta','trayectoria','miAlerta','desactivarAlerta']:
             permissions = [IsAuthenticated,IsAccountOwner]
@@ -591,6 +591,26 @@ class alertaViewSet(viewsets.GenericViewSet):
         serializer.save()
         
         return Response(status=status.HTTP_200_OK)
+
+    """endpoint alternativo para verificar si la alerta esta desactivada"""
+    @action(detail=False,methods=['get'],url_path='desactivacion-alternativo')
+    def alternativoDesactivacion(self,request,*args,**kwargs):
+        
+        #guardar la variable en self.data
+        self.request.data['numero_serie'] = self.request.query_params.get('numero-serie',None)
+
+        #obtener la instancia del dispositivo rastreador
+        try:
+            dispositivo = get_object_or_404(DispositivoRastreador,numero_serie=request.data['numero_serie'])
+            grupo = get_object_or_404(Grupo,usuaria=dispositivo.usuaria)
+            serializer = grupoDesactivacionSerializer(grupo)
+            data = serializer.data
+            estado = status.HTTP_200_OK
+        except:
+            data = None
+            estado = status.HTTP_404_NOT_FOUND
+
+        return Response(data,status=estado)
 
 
 
