@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, password_validation
 
 #librearia de date
 from datetime import date
+from datetime import timedelta
 
 #django rest framework
 from rest_framework import serializers
@@ -1505,6 +1506,14 @@ class cuestionarioCrearSerializer(serializers.Serializer):
             raise serializers.ValidationError('Ya respondiste este cuestionario.')
         except Cuestionario.DoesNotExist:
             pass
+
+        #validar que hayan pasado por lo menos 10 minutos
+        datetime_inicio = alerta.fecha_hora #fecha inicial de la alerta
+        datetime_actual = datetime.now() # fecha actual
+        diferencia = datetime_actual - datetime_inicio #diferencia de fechas
+
+        if diferencia < timedelta(minutes=10): 
+            raise serializers.ValidationError('Aun puedes responder este cuestionario.')
 
         return data
 
