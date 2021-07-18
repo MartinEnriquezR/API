@@ -19,7 +19,7 @@ from .models import *
 from .permissions import *
 
 #libreria de tiempo
-import datetime
+from datetime import datetime
 
 
 class personaViewSet(mixins.RetrieveModelMixin,
