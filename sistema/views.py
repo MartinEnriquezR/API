@@ -18,6 +18,9 @@ from .models import *
 #permiso custom
 from .permissions import *
 
+#libreria de tiempo
+import datetime
+
 
 class personaViewSet(mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
@@ -784,3 +787,12 @@ class senasViewSet(viewsets.GenericViewSet):
 
 
 
+class pruebasViewSet(viewsets.GenericViewSet):
+    
+    """Definir permisos"""
+    permission_classes = [AllowAny]
+
+    @action(detail=False, methods=['get'], url_path='server-local-hour')
+    def serverHour(self,request,*args,**kwargs):
+        data = str(datetime.now())
+        return Response(data,status=status.HTTP_200_OK)
