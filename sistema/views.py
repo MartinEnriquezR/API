@@ -512,7 +512,7 @@ class alertaViewSet(viewsets.GenericViewSet):
         #[nombre_alerta] la cual por la funcion de motificacionAlerta debe ser la ultima
         #en la PWA se debe de mostrar la ultima alerta del grupo y sus ubicaciones
 
-        #instancia de la persona
+        #instancia de la persona (miembro)
         miembro = get_object_or_404(Persona,email=self.request.user)
 
         #encontrar el grupo con la usuaria y el miembro
@@ -530,7 +530,7 @@ class alertaViewSet(viewsets.GenericViewSet):
         )
 
         #traer las ubicaciones de esa alerta
-        ubicaciones = Ubicacion.objects.filter(alerta=alerta)
+        ubicaciones = Ubicacion.objects.filter(alerta=alerta).order_by('fecha_hora')
         serializer = trayectoriaSerializer(ubicaciones,many=True)
         data = serializer.data
 
