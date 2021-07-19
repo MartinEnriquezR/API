@@ -13,7 +13,7 @@ from rest_framework.validators import UniqueValidator
 #librerias de python
 from random import seed
 from random import randint
-import datetime
+#import datetime
 
 #importando los modelos
 from .models import *
