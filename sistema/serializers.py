@@ -3,8 +3,9 @@ from django.contrib.auth import authenticate, password_validation
 
 #librearia de date
 from datetime import date
+from datetime import datetime
 from datetime import timedelta
-#from datetime import datetime
+
 #django rest framework
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
@@ -13,7 +14,6 @@ from rest_framework.validators import UniqueValidator
 #librerias de python
 from random import seed
 from random import randint
-import datetime
 
 #importando los modelos
 from .models import *
@@ -1100,7 +1100,7 @@ class grupoUnirSerializer(serializers.Serializer):
         miembro = Miembros.objects.create(
             grupo=grupo,
             persona=persona,
-            fecha_union=datetime.date.today()
+            fecha_union=date.today()
         )
 
         return grupo
@@ -1506,15 +1506,18 @@ class cuestionarioCrearSerializer(serializers.Serializer):
             raise serializers.ValidationError('Ya respondiste este cuestionario.')
         except Cuestionario.DoesNotExist:
             pass
-        """
-        #validar que hayan pasado por lo menos 10 minutos
-        datetime_inicio = alerta.fecha_hora #fecha inicial de la alerta
-        datetime_actual = datetime.now() # fecha actual
-        diferencia = datetime_actual - datetime_inicio #diferencia de fechas
-
-        if diferencia < timedelta(minutes=10): 
+        
+        #saber si han pasado por lo menos 10 minutos
+        datetime_alerta = alerta.fecha_hora
+        datetime_alerta_str = str(datetime_alerta)
+        
+        datetime_inicio_obj = datetime.strptime(datetime_alerta_str[0:19],'%Y-%m-%d %H:%M:%S')
+        datetime_actual = datetime.now()
+        diferencia = datetime_actual - datetime_inicio_obj
+        
+        if diferencia < timedelta(minutes=10):
             raise serializers.ValidationError('Aun puedes responder este cuestionario.')
-        """
+
         return data
 
     def validarInformacion(self,data):
