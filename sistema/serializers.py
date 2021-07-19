@@ -1516,7 +1516,7 @@ class cuestionarioCrearSerializer(serializers.Serializer):
         diferencia = datetime_actual - datetime_inicio_obj
         
         if diferencia < timedelta(minutes=10):
-            raise serializers.ValidationError('Aun puedes responder este cuestionario.')
+            raise serializers.ValidationError('Aun no puedes responder este cuestionario.')
 
         return data
 
