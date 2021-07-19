@@ -1507,6 +1507,12 @@ class cuestionarioCrearSerializer(serializers.Serializer):
         except Cuestionario.DoesNotExist:
             pass
         
+        self.validarTiempo(alerta)
+
+        return data
+
+    def validarTiempo(self,alerta):
+        
         #saber si han pasado por lo menos 10 minutos
         datetime_alerta = alerta.fecha_hora
         datetime_alerta_str = str(datetime_alerta)
@@ -1517,12 +1523,11 @@ class cuestionarioCrearSerializer(serializers.Serializer):
         
         if diferencia < timedelta(minutes=10):
             raise serializers.ValidationError(
-                str(datetime_inicio_obj) + '\n' + 
-                str(datetime_actual) + '\n' +
+                datetime_alerta_str + '----' +
+                str(datetime_inicio_obj) + '----' + 
+                str(datetime_actual) + '----' +
                 str(diferencia)
             )
-
-        return data
 
     def validarInformacion(self,data):
         #saber si existe el tipo de circunstancia
