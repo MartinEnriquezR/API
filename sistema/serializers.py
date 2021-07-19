@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, password_validation
 #librearia de date
 from datetime import date
 from datetime import timedelta
-from datetime import datetime
+#from datetime import datetime
 #django rest framework
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
@@ -13,7 +13,7 @@ from rest_framework.validators import UniqueValidator
 #librerias de python
 from random import seed
 from random import randint
-#import datetime
+import datetime
 
 #importando los modelos
 from .models import *
@@ -1506,7 +1506,7 @@ class cuestionarioCrearSerializer(serializers.Serializer):
             raise serializers.ValidationError('Ya respondiste este cuestionario.')
         except Cuestionario.DoesNotExist:
             pass
-
+        """
         #validar que hayan pasado por lo menos 10 minutos
         datetime_inicio = alerta.fecha_hora #fecha inicial de la alerta
         datetime_actual = datetime.now() # fecha actual
@@ -1514,7 +1514,7 @@ class cuestionarioCrearSerializer(serializers.Serializer):
 
         if diferencia < timedelta(minutes=10): 
             raise serializers.ValidationError('Aun puedes responder este cuestionario.')
-
+        """
         return data
 
     def validarInformacion(self,data):
