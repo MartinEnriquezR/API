@@ -1514,13 +1514,22 @@ class cuestionarioCrearSerializer(serializers.Serializer):
     def validarTiempo(self,alerta):
         
         #saber si han pasado por lo menos 10 minutos
-        datetime_alerta = alerta.fecha_hora
-        datetime_alerta_str = str(datetime_alerta)
+        datetime_alerta = alerta.fecha_hora #fecha_hora UTC +0
+        datetime_alerta_str = str(datetime_alerta) #fecha en formato string
+        datetime_inicio_obj_utc0 = datetime.strptime(datetime_alerta_str[0:19],'%Y-%m-%d %H:%M:%S')
         
-        datetime_inicio_obj = datetime.strptime(datetime_alerta_str[0:19],'%Y-%m-%d %H:%M:%S')
-        datetime_actual = datetime.now()
-        diferencia = datetime_actual - datetime_inicio_obj
+        datetime_inicio_obj_utc_5 = datetime_inicio_obj_utc0 - timedelta(hours=5)
+        datetime_server_utc_5 = datetime.now()
+        diferencia = datetime_server_utc_5 - datetime_inicio_obj_utc_5
         
+        raise serializers.ValidationError(
+            datetime_alerta_str + '----' +
+            str(datetime_inicio_obj_utc_5) + '----' + 
+            str(datetime_server_utc_5) + '----' +
+            str(diferencia)
+        )
+
+        """
         if diferencia < timedelta(minutes=10):
             raise serializers.ValidationError(
                 datetime_alerta_str + '----' +
@@ -1528,6 +1537,7 @@ class cuestionarioCrearSerializer(serializers.Serializer):
                 str(datetime_actual) + '----' +
                 str(diferencia)
             )
+        """
 
     def validarInformacion(self,data):
         #saber si existe el tipo de circunstancia
