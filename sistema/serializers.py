@@ -1518,26 +1518,15 @@ class cuestionarioCrearSerializer(serializers.Serializer):
         datetime_alerta_str = str(datetime_alerta) #fecha en formato string
         datetime_inicio_obj_utc0 = datetime.strptime(datetime_alerta_str[0:19],'%Y-%m-%d %H:%M:%S')
         
-        datetime_inicio_obj_utc_5 = datetime_inicio_obj_utc0 - timedelta(hours=5)
-        datetime_server_utc_5 = datetime.now()
+        datetime_inicio_obj_utc_5 = datetime_inicio_obj_utc0 - timedelta(hours=5) #hora de la alerta en utc -5
+        datetime_server_utc_5 = datetime.now() #hora local del servidor
         diferencia = datetime_server_utc_5 - datetime_inicio_obj_utc_5
         
-        raise serializers.ValidationError(
-            datetime_alerta_str + '----' +
-            str(datetime_inicio_obj_utc_5) + '----' + 
-            str(datetime_server_utc_5) + '----' +
-            str(diferencia)
-        )
-
-        """
         if diferencia < timedelta(minutes=10):
             raise serializers.ValidationError(
-                datetime_alerta_str + '----' +
-                str(datetime_inicio_obj) + '----' + 
-                str(datetime_actual) + '----' +
-                str(diferencia)
+                'Aun no puedes responder este cuestionario.'
             )
-        """
+        
 
     def validarInformacion(self,data):
         #saber si existe el tipo de circunstancia
