@@ -1507,7 +1507,7 @@ class cuestionarioCrearSerializer(serializers.Serializer):
         except Cuestionario.DoesNotExist:
             pass
         
-        self.validarTiempo(alerta)
+        #self.validarTiempo(alerta)
 
         return data
 
